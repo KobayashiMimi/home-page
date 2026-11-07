@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小林 ミミ</title>
+  <meta name="description" content="小林 ミミ — フリーランス / 写真と映像。ポートフォリオ・写真集サイト。">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="format-detection" content="telephone=no,email=no,address=no">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Zen+Antique+Soft&family=Zen+Old+Mincho:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="site-wrapper">
+    <!-- Top Vertical Brand Header -->
+    <header class="site-header">
+      <a href="#top" class="brand-vertical" aria-label="小林 ミミ トップページへ">小林 ミミ</a>
+    </header>
+
+    <!-- Main Stage -->
+    <main class="site-main">
+      <!-- 1. TOP -->
+      <section id="view-top" class="view-section is-active is-visible" aria-label="トップ">
+        <div class="top-stage">
+          <a href="#photographs" class="top-hero-link" aria-label="写真一覧を見る">
+            <img
+              id="top-hero-img"
+              src="assets/hero-top.jpg"
+              alt="小林 ミミ 代表写真"
+              class="top-hero-image is-active"
+            >
+            <img
+              id="top-hero-img-next"
+              src=""
+              alt="小林 ミミ 写真作品"
+              class="top-hero-image"
+              aria-hidden="true"
+            >
+          </a>
+        </div>
+      </section>
+
+      <!-- 2. SELF -->
+      <section id="view-self" class="view-section" aria-label="プロフィール">
+        <div class="self-stage">
+          <div class="self-photo-wrap">
+            <img
+              src="assets/self-profile.jpg"
+              alt="小林 ミミ プロフィール写真"
+              class="self-photo"
+              loading="lazy"
+            >
+          </div>
+          <div class="self-bio">
+            <p class="self-bio-line">小林ミミ　/　写真家</p>
+            <p class="self-bio-detail">2004年大阪府出身</p>
+            <p class="self-bio-detail">大阪芸術大学附属大阪美術専門学校卒業</p>
+            <p class="self-bio-detail">大阪府在住</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. PHOTOGRAPHS (Photobook Grid) -->
+      <section id="view-portfolio" class="view-section" aria-label="写真集">
+        <div class="portfolio-stage">
+          <div class="portfolio-toolbar">
+            <span id="portfolio-count" class="portfolio-count">111 photographs</span>
+            <div class="portfolio-layout-switch" role="group" aria-label="表示切り替え">
+              <button type="button" class="layout-btn is-active" data-layout="editorial" aria-label="写真集見開き表示（大小配置）" title="spread">
+                <svg class="layout-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+                  <rect x="1.5" y="2.5" width="7" height="9" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                  <rect x="10.5" y="5.5" width="4" height="8" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                </svg>
+              </button>
+              <button type="button" class="layout-btn" data-layout="uniform" aria-label="一覧グリッド表示" title="index">
+                <svg class="layout-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+                  <rect x="1.5" y="1.5" width="5" height="5" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                  <rect x="9.5" y="1.5" width="5" height="5" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                  <rect x="1.5" y="9.5" width="5" height="5" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                  <rect x="9.5" y="9.5" width="5" height="5" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                </svg>
+              </button>
+              <button type="button" class="layout-btn" data-layout="scroll" aria-label="1列縦スクロール表示" title="sequence">
+                <svg class="layout-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+                  <rect x="2.5" y="1.5" width="11" height="5" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                  <rect x="2.5" y="9.5" width="11" height="5" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div id="photobook-grid" class="photobook-grid is-editorial"></div>
+        </div>
+      </section>
+
+      <!-- 4. FILMS (Music Videos from STUDIO) -->
+      <section id="view-films" class="view-section" aria-label="映像作品">
+        <div class="films-stage">
+          <article class="film-item">
+            <div class="film-video-wrap">
+              <iframe
+                src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FTYp5mWlrGpM%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTYp5mWlrGpM&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FTYp5mWlrGpM%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube"
+                title="シュウタネギ / 東京 Music Video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+            <p class="film-caption">シュウタネギ/東京　自主制作作品</p>
+          </article>
+
+          <article class="film-item">
+            <div class="film-video-wrap">
+              <iframe
+                src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fu57kkotD5Qg%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Du57kkotD5Qg&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fu57kkotD5Qg%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube"
+                title="中野来夢 / 傘 Music Video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+            <p class="film-caption">中野来夢/傘　監督・撮影・編集</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5. CONTACT -->
+      <section id="view-contact" class="view-section" aria-label="コンタクト">
+        <div class="contact-stage">
+          <p class="contact-item">
+            <a href="mailto:KOBAYASHI.33018@gmail.com">mail: KOBAYASHI.33018@gmail.com</a>
+          </p>
+          <p class="contact-item">
+            <a href="https://www.instagram.com/kobayashi__mimi?xtok=MWV0YTVteDhlcGxrMg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram：@kobayashi__mimi</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation ("下ヘッダー") -->
+    <footer class="site-footer-nav">
+      <nav aria-label="メインナビゲーション">
+        <ul class="nav-list">
+          <li><a href="#self" class="nav-link" data-nav="self">self</a></li>
+          <li><a href="#photographs" class="nav-link" data-nav="photographs">photographs</a></li>
+          <li><a href="#films" class="nav-link" data-nav="films">films</a></li>
+          <li><a href="#contact" class="nav-link" data-nav="contact">contact</a></li>
+        </ul>
+      </nav>
+    </footer>
+  </div>
+
+  <!-- Single-Photo Page-Turning Viewer (Photobook Leaf View) -->
+  <div id="viewer-modal" class="viewer-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="写真ビューア">
+    <div class="viewer-top-bar">
+      <a href="#top" class="viewer-brand" aria-label="小林 ミミ トップページへ">小林 ミミ</a>
+    </div>
+
+    <div id="viewer-stage" class="viewer-stage">
+      <div class="viewer-image-container">
+        <div id="viewer-tap-prev" class="viewer-tap-zone viewer-tap-prev" title="前の写真へ"></div>
+        <img id="viewer-img" src="" alt="" class="viewer-img is-active">
+        <img id="viewer-img-next" src="" alt="" class="viewer-img" aria-hidden="true">
+        <div id="viewer-tap-next" class="viewer-tap-zone viewer-tap-next" title="次の写真へ"></div>
+      </div>
+
+      <div class="viewer-controls">
+        <div class="viewer-pager">
+          <button type="button" id="viewer-prev" class="viewer-btn">prev</button>
+          <button type="button" id="viewer-next" class="viewer-btn">next</button>
+        </div>
+        <div class="viewer-meta-right">
+          <span id="viewer-counter" class="viewer-counter">001 / 111</span>
+          <button type="button" id="viewer-close" class="viewer-close-btn">index</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-footer-nav">
+      <nav aria-label="ビューア内ナビゲーション">
+        <ul class="nav-list">
+          <li><a href="#self" class="nav-link" data-nav="self">self</a></li>
+          <li><a href="#photographs" class="nav-link" data-nav="photographs">photographs</a></li>
+          <li><a href="#films" class="nav-link" data-nav="films">films</a></li>
+          <li><a href="#contact" class="nav-link" data-nav="contact">contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Background Loop Audio -->
+  <audio id="bg-audio" src="birth.m4a" loop preload="auto" autoplay></audio>
+
+  <script src="js/photos-data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

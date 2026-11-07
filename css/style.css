@@ -1,0 +1,1129 @@
+@charset "UTF-8";
+
+:root {
+  --bg: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #eeeeee;
+  --text-muted: rgba(238, 238, 238, 0.48);
+  --text-faint: rgba(238, 238, 238, 0.26);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --font-antique: 'Zen Antique Soft', 'Zen Old Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-mincho: 'Zen Old Mincho', 'Zen Antique Soft', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-slow: 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-mid: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-antique);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-x: hidden;
+  selection-background-color: rgba(255, 255, 255, 0.2);
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity var(--transition-mid);
+}
+
+a:hover {
+  opacity: 0.6;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--transition-mid);
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.6;
+}
+
+button:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+/* ==========================================================================
+   Site Shell & Vertical Title Header (小林 ミミ)
+   ========================================================================== */
+
+.site-wrapper {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 28px 32px;
+}
+
+.site-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 24px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+}
+
+.brand-vertical {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-antique);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: 0.85em;
+  line-height: 1.4;
+  padding-top: 0.4em;
+  user-select: none;
+  transition: opacity var(--transition-mid);
+}
+
+.brand-vertical:hover {
+  opacity: 0.65;
+}
+
+/* ==========================================================================
+   Main Stage & Section Transitions
+   ========================================================================== */
+
+.site-main {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 12px 0 36px;
+}
+
+.view-section {
+  width: 100%;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.view-section.is-active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-section.is-visible {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   1. TOP View
+   ========================================================================== */
+
+.top-stage {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-hero-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 880px;
+  height: 62vh;
+  max-height: 580px;
+  min-height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.top-hero-link:hover {
+  opacity: 1;
+}
+
+.top-hero-image {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 2.52s ease;
+  pointer-events: none;
+}
+
+.top-hero-image.is-active.is-loaded {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   2. SELF View
+   ========================================================================== */
+
+.self-stage {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  padding: 20px 0;
+}
+
+.self-photo-wrap {
+  flex: 0 1 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.self-photo {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+}
+
+.self-bio {
+  flex: 0 1 300px;
+  font-family: var(--font-antique);
+  font-size: 11px;
+  line-height: 2.1;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.self-bio-line {
+  margin-bottom: 20px;
+}
+
+.self-bio-detail {
+  margin-bottom: 4px;
+}
+
+/* ==========================================================================
+   3. PHOTOGRAPHS View (Editorial Photobook Spread & Grid)
+   ========================================================================== */
+
+.portfolio-stage {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.portfolio-toolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 44px;
+  padding: 14px 4px;
+  font-family: var(--font-mincho);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--text-muted);
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  background-color: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.portfolio-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolio-layout-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 36;
+}
+
+.layout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--text-primary);
+  opacity: 0.28;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity var(--transition-mid);
+}
+
+.layout-btn.is-active,
+.layout-btn:hover {
+  color: var(--text-primary);
+  opacity: 0.92;
+}
+
+.layout-icon {
+  display: block;
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
+}
+
+/* Base Grid */
+.photobook-grid {
+  width: 100%;
+  display: grid;
+  position: relative;
+  z-index: 1;
+}
+
+/* Mode 1: Editorial Photobook Spread (Minimum size = 5 cols matching 025, orphan-free balanced spreads) */
+.photobook-grid.is-editorial {
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 32px;
+  row-gap: 120px;
+  align-items: center;
+}
+
+.photobook-grid.is-editorial .photo-plate-img {
+  width: 100%;
+  height: auto;
+}
+
+/* --- Feature Plates (001, 007, 014, 031, 040, 047, 056, 059, 065, 078, 081, 092, 096, 111) --- */
+.photobook-grid.is-editorial .feature-opening-xl {
+  grid-column: 1 / span 12;
+  margin: 8px 0 44px;
+  justify-self: center;
+}
+.photobook-grid.is-editorial .feature-opening-xl .photo-plate-img {
+  max-width: 980px;
+}
+
+.photobook-grid.is-editorial .feature-landscape-xl {
+  grid-column: 2 / span 10;
+  margin: 40px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .feature-landscape-left {
+  grid-column: 1 / span 10;
+  margin: 40px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .feature-landscape-right {
+  grid-column: 3 / span 10;
+  margin: 40px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .feature-portrait-center {
+  grid-column: 3 / span 8;
+  margin: 36px 0;
+  justify-self: center;
+}
+.photobook-grid.is-editorial .feature-portrait-center .photo-plate-img {
+  max-width: 620px;
+}
+
+.photobook-grid.is-editorial .feature-portrait-left {
+  grid-column: 2 / span 8;
+  margin: 36px 0;
+  justify-self: center;
+}
+.photobook-grid.is-editorial .feature-portrait-left .photo-plate-img {
+  max-width: 620px;
+}
+
+.photobook-grid.is-editorial .feature-portrait-right {
+  grid-column: 3 / span 8;
+  margin: 36px 0;
+  justify-self: center;
+}
+.photobook-grid.is-editorial .feature-portrait-right .photo-plate-img {
+  max-width: 620px;
+}
+
+/* --- Balanced 2-Photo Diptych Pairs (Every pair completes a 12-col row; min width = 5 cols = 025 size) --- */
+/* Pair 1: Large Left (7 cols) + Min Right Lower (5 cols) */
+.photobook-grid.is-editorial .pair-lg-left {
+  grid-column: 1 / span 7;
+  justify-self: start;
+}
+
+.photobook-grid.is-editorial .pair-min-right-low {
+  grid-column: 8 / span 5;
+  margin-top: 84px;
+  justify-self: end;
+}
+
+/* Pair 2: Min Left (5 cols) + Medium-Large Right Higher (6 cols) */
+.photobook-grid.is-editorial .pair-min-left {
+  grid-column: 1 / span 5;
+  margin-top: 64px;
+  justify-self: start;
+}
+
+.photobook-grid.is-editorial .pair-md-right-high {
+  grid-column: 7 / span 6;
+  justify-self: end;
+}
+
+/* Pair 3: Medium-Large Left (6 cols) + Min Right (5 cols) */
+.photobook-grid.is-editorial .pair-md-left {
+  grid-column: 1 / span 6;
+  justify-self: start;
+}
+
+.photobook-grid.is-editorial .pair-min-right {
+  grid-column: 8 / span 5;
+  margin-top: 68px;
+  justify-self: end;
+}
+
+/* Pair 4: Min Left Lower (5 cols) + Large Right (7 cols) */
+.photobook-grid.is-editorial .pair-min-left-low {
+  grid-column: 1 / span 5;
+  margin-top: 80px;
+  justify-self: start;
+}
+
+.photobook-grid.is-editorial .pair-lg-right {
+  grid-column: 6 / span 7;
+  justify-self: end;
+}
+
+/* Pair 5: Balanced 5-col + 5-col Diptych with 2-col breathing space in center */
+.photobook-grid.is-editorial .pair-min-left-in {
+  grid-column: 1 / span 5;
+  justify-self: start;
+}
+
+.photobook-grid.is-editorial .pair-min-right-in {
+  grid-column: 8 / span 5;
+  margin-top: 56px;
+  justify-self: end;
+}
+
+/* --- Balanced 1-Photo Solo Plates (Never orphaned on an edge) --- */
+.photobook-grid.is-editorial .solo-lg-center {
+  grid-column: 3 / span 8;
+  margin: 24px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .solo-md-left-mid {
+  grid-column: 3 / span 6;
+  margin: 20px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .solo-lg-right-mid {
+  grid-column: 4 / span 7;
+  margin: 24px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .solo-md-center {
+  grid-column: 4 / span 6;
+  margin: 20px 0;
+  justify-self: center;
+}
+
+.photobook-grid.is-editorial .solo-lg-left-mid {
+  grid-column: 3 / span 7;
+  margin: 24px 0;
+  justify-self: center;
+}
+
+/* Mode 2: Uniform Contact-Sheet Index Grid */
+.photobook-grid.is-uniform-grid {
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 52px;
+  row-gap: 76px;
+  align-items: center;
+}
+
+.photobook-grid.is-uniform-grid .photo-plate {
+  grid-column: auto;
+  margin: 0;
+  justify-self: center;
+  align-self: center;
+}
+
+.photobook-grid.is-uniform-grid .photo-plate-frame {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.photobook-grid.is-uniform-grid .photo-plate-img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Mode 3: Single-Column Sequence */
+.photobook-grid.is-single-column {
+  grid-template-columns: minmax(0, 680px);
+  justify-content: center;
+  row-gap: 128px;
+}
+
+.photobook-grid.is-single-column .photo-plate {
+  grid-column: 1 / -1;
+  margin: 0;
+  justify-self: center;
+  align-self: start;
+}
+
+.photobook-grid.is-single-column .photo-plate-frame {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.photobook-grid.is-single-column .photo-plate-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 76vh;
+  margin: 0 auto;
+}
+
+/* Plate Elements */
+.photo-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.photo-plate.is-in-view {
+  opacity: 1;
+}
+
+.photo-plate-frame {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-plate-img {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.photobook-grid.is-editorial .photo-plate.is-landscape .photo-plate-img {
+  aspect-ratio: 4 / 3;
+}
+
+.photobook-grid.is-editorial .photo-plate.is-portrait .photo-plate-img {
+  aspect-ratio: 3 / 4;
+}
+
+.photo-plate.is-in-view .photo-plate-img.is-loaded {
+  opacity: 0.94;
+}
+
+.photo-plate.is-in-view:hover .photo-plate-img.is-loaded {
+  opacity: 1;
+}
+
+.photo-plate-num {
+  margin-top: 14px;
+  font-family: var(--font-mincho);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--transition-mid);
+}
+
+.photo-plate:hover .photo-plate-num {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   4. FILMS View (Music Videos from STUDIO)
+   ========================================================================== */
+
+.films-stage {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 84px;
+  padding: 24px 0 36px;
+}
+
+.film-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.film-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #080808;
+  overflow: hidden;
+}
+
+.film-video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.film-caption {
+  margin-top: 14px;
+  font-family: var(--font-antique);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 2.2;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+/* ==========================================================================
+   5. CONTACT View
+   ========================================================================== */
+
+.contact-stage {
+  width: 100%;
+  min-height: 46vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.contact-item {
+  font-family: var(--font-mincho);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+/* ==========================================================================
+   Bottom Navigation ("下ヘッダー" from STUDIO)
+   ========================================================================== */
+
+.site-footer-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 0 12px;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 92px;
+}
+
+.nav-link {
+  display: inline-block;
+  font-family: var(--font-antique);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: 0.65em;
+  padding: 8px 4px;
+  padding-left: calc(4px + 0.65em);
+  position: relative;
+  transition: opacity var(--transition-mid);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity var(--transition-mid);
+}
+
+.nav-link.is-active::after {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Single-Photo Page-Turning Viewer (STUDIO Photobook Leaf View)
+   ========================================================================== */
+
+.viewer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.viewer-modal:not(.is-open) * {
+  pointer-events: none !important;
+}
+
+.viewer-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.viewer-top-bar {
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 12px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.viewer-brand {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-antique);
+  font-size: 12px;
+  color: var(--text-primary);
+  letter-spacing: 0.85em;
+  line-height: 1.4;
+  margin: 0 auto;
+}
+
+.viewer-stage {
+  flex: 1;
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  padding: 4px 0;
+  user-select: none;
+}
+
+.viewer-image-container {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.viewer-img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.75s ease;
+  pointer-events: none;
+}
+
+.viewer-img.is-active.is-loaded {
+  opacity: 1;
+}
+
+/* Invisible left/right book-page click zones on stage */
+.viewer-tap-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.viewer-tap-zone.is-disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.viewer-tap-prev {
+  left: 0;
+}
+
+.viewer-tap-next {
+  right: 0;
+}
+
+/* Bottom controls matching STUDIO prev / next aesthetic */
+.viewer-controls {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 0 8px;
+  font-family: var(--font-mincho);
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.25em;
+  flex-shrink: 0;
+}
+
+.viewer-modal .site-footer-nav {
+  padding: 8px 0 4px;
+}
+
+.viewer-pager {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.viewer-btn {
+  font-family: var(--font-mincho);
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.22em;
+  padding: 8px 4px;
+}
+
+.viewer-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.viewer-counter {
+  font-family: var(--font-mincho);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+}
+
+.viewer-close-btn {
+  font-family: var(--font-mincho);
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.25em;
+  padding: 8px 4px;
+}
+
+/* ==========================================================================
+   Responsive Design (Tablet & Smartphone)
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .photobook-grid.is-editorial {
+    column-gap: 18px;
+    row-gap: 76px;
+  }
+
+  .photobook-grid.is-uniform-grid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 36px;
+    row-gap: 56px;
+  }
+
+  .self-stage {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .self-photo-wrap {
+    flex: none;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .self-bio {
+    flex: none;
+  }
+
+  .nav-list {
+    gap: 52px;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-wrapper {
+    padding: 24px 18px 24px;
+  }
+
+  .site-header {
+    padding: 4px 0 16px;
+  }
+
+  .brand-vertical {
+    font-size: 11px;
+    letter-spacing: 0.75em;
+  }
+
+  .top-hero-link {
+    height: 52vh;
+    min-height: 240px;
+  }
+
+  /* Preserve varied editorial sizes on mobile (minimum = 5 cols, features = 9–12 cols) */
+  .photobook-grid.is-editorial {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 14px;
+    row-gap: 64px;
+  }
+
+  .photobook-grid.is-editorial .feature-opening-xl {
+    grid-column: 1 / span 12;
+    margin: 4px 0 32px;
+  }
+
+  .photobook-grid.is-editorial .feature-landscape-xl,
+  .photobook-grid.is-editorial .feature-landscape-left,
+  .photobook-grid.is-editorial .feature-landscape-right {
+    grid-column: 1 / span 12;
+    margin: 24px 0 36px;
+  }
+
+  .photobook-grid.is-editorial .feature-portrait-center {
+    grid-column: 2 / span 10;
+    margin: 24px 0 36px;
+  }
+
+  .photobook-grid.is-editorial .feature-portrait-left {
+    grid-column: 1 / span 10;
+    margin: 24px 0 36px;
+  }
+
+  .photobook-grid.is-editorial .feature-portrait-right {
+    grid-column: 3 / span 10;
+    margin: 24px 0 36px;
+  }
+
+  .photobook-grid.is-editorial .pair-lg-left {
+    grid-column: 1 / span 7;
+  }
+
+  .photobook-grid.is-editorial .pair-min-right-low {
+    grid-column: 8 / span 5;
+    margin-top: 44px;
+  }
+
+  .photobook-grid.is-editorial .pair-min-left {
+    grid-column: 1 / span 5;
+    margin-top: 36px;
+  }
+
+  .photobook-grid.is-editorial .pair-md-right-high {
+    grid-column: 7 / span 6;
+  }
+
+  .photobook-grid.is-editorial .pair-md-left {
+    grid-column: 1 / span 6;
+  }
+
+  .photobook-grid.is-editorial .pair-min-right {
+    grid-column: 8 / span 5;
+    margin-top: 40px;
+  }
+
+  .photobook-grid.is-editorial .pair-min-left-low {
+    grid-column: 1 / span 5;
+    margin-top: 44px;
+  }
+
+  .photobook-grid.is-editorial .pair-lg-right {
+    grid-column: 6 / span 7;
+  }
+
+  .photobook-grid.is-editorial .pair-min-left-in {
+    grid-column: 1 / span 5;
+  }
+
+  .photobook-grid.is-editorial .pair-min-right-in {
+    grid-column: 8 / span 5;
+    margin-top: 36px;
+  }
+
+  .photobook-grid.is-editorial .solo-lg-center {
+    grid-column: 2 / span 10;
+    margin: 18px 0;
+  }
+
+  .photobook-grid.is-editorial .solo-md-left-mid {
+    grid-column: 2 / span 8;
+    margin: 16px 0;
+  }
+
+  .photobook-grid.is-editorial .solo-lg-right-mid {
+    grid-column: 3 / span 9;
+    margin: 18px 0;
+  }
+
+  .photobook-grid.is-editorial .solo-md-center {
+    grid-column: 3 / span 8;
+    margin: 16px 0;
+  }
+
+  .photobook-grid.is-editorial .solo-lg-left-mid {
+    grid-column: 2 / span 9;
+    margin: 18px 0;
+  }
+
+  .photobook-grid.is-uniform-grid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+    row-gap: 40px;
+  }
+
+  .photobook-grid.is-single-column {
+    grid-template-columns: 1fr;
+    row-gap: 64px;
+  }
+
+  .portfolio-toolbar {
+    margin-bottom: 32px;
+  }
+
+  .photo-plate-num {
+    margin-top: 8px;
+    font-size: 8px;
+  }
+
+  .films-stage {
+    gap: 56px;
+    padding: 12px 0 24px;
+  }
+
+  .film-caption {
+    font-size: 10px;
+    margin-top: 10px;
+  }
+
+  .nav-list {
+    gap: 22px;
+  }
+
+  .nav-link {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    padding-left: calc(4px + 0.4em);
+  }
+
+  .viewer-modal {
+    padding: 14px 16px 6px;
+  }
+
+  .viewer-controls {
+    margin-top: 10px;
+  }
+}
