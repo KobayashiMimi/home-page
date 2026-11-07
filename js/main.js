@@ -38,6 +38,7 @@
   let activeViewerLayer = 0; // 0 = viewerImg, 1 = viewerImgNext
   let savedScrollY = 0;
   let plateObserver = null;
+  let filmsObserver = null;
 
   function setupPlateScrollReveal() {
     if (!gridContainer) return;
@@ -71,6 +72,70 @@
     plates.forEach((el) => {
       if (!el.classList.contains('is-in-view')) {
         plateObserver.observe(el);
+      }
+    });
+  }
+
+  function setupFilmsScrollReveal(resetExisting = false) {
+    if (!sections.films) return;
+    const targets = sections.films.querySelectorAll('.film-video-wrap, .film-caption, .film-still-img');
+
+    if (resetExisting) {
+      targets.forEach((el) => {
+        el.classList.remove('is-in-view');
+        el.style.transitionDelay = '';
+      });
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach((el) => el.classList.add('is-in-view'));
+      return;
+    }
+
+    if (filmsObserver) {
+      filmsObserver.disconnect();
+    }
+
+    // Track whether this is the initial batch visible on opening the Films view
+    let isInitialBatch = true;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        isInitialBatch = false;
+      });
+    });
+
+    filmsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            if (el.classList.contains('film-still-img')) {
+              const siblings = el.parentElement
+                ? Array.from(el.parentElement.querySelectorAll('.film-still-img'))
+                : [];
+              const idxInGroup = siblings.indexOf(el);
+              if (isInitialBatch && idxInGroup >= 0 && idxInGroup < 2) {
+                // Gentle delayed fade for the first 2 photos of "東京" right after the section opens
+                el.style.transitionDelay = `${0.42 + idxInGroup * 0.14}s`;
+              } else if (idxInGroup >= 0) {
+                el.style.transitionDelay = `${(idxInGroup % 2) * 0.12}s`;
+              }
+            }
+            el.classList.add('is-in-view');
+            filmsObserver.unobserve(el);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.12
+      }
+    );
+
+    targets.forEach((el) => {
+      if (!el.classList.contains('is-in-view')) {
+        filmsObserver.observe(el);
       }
     });
   }
@@ -261,12 +326,21 @@
       const el = sections[key];
       if (!el) return;
       if (key === viewName) {
+        if (viewName === 'films') {
+          const filmTargets = el.querySelectorAll('.film-video-wrap, .film-caption, .film-still-img');
+          filmTargets.forEach((t) => {
+            t.classList.remove('is-in-view');
+            t.style.transitionDelay = '';
+          });
+        }
         el.classList.add('is-active');
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             el.classList.add('is-visible');
             if (viewName === 'photographs') {
               setupPlateScrollReveal();
+            } else if (viewName === 'films') {
+              setupFilmsScrollReveal(false);
             }
           });
         });
@@ -610,41 +684,73 @@
     slideshowTimer = setInterval(advanceTopSlideshow, SLIDESHOW_INTERVAL_MS);
   }
 
-  // Background Loop Audio (birth.wav)
+  // Background Loop Audio (assets/birth.m4a)
   function setupBackgroundAudio() {
     const bgAudio = document.getElementById('bg-audio');
     if (!bgAudio) return;
 
+    const audioSrc = 'assets/birth.m4a';
+    if (!bgAudio.getAttribute('src') || bgAudio.getAttribute('src') !== audioSrc) {
+      bgAudio.setAttribute('src', audioSrc);
+      bgAudio.load();
+    }
+
     bgAudio.loop = true;
     bgAudio.volume = 0.28;
 
+    let isPlaying = false;
+
     const tryPlay = () => {
       if (document.hidden) return;
+      if (!bgAudio.paused && !bgAudio.ended) {
+        isPlaying = true;
+        removeUnlockListeners();
+        return;
+      }
+
+      bgAudio.volume = 0.28;
       const playPromise = bgAudio.play();
       if (playPromise && typeof playPromise.then === 'function') {
         playPromise
           .then(() => {
-            removeUnlockListeners();
+            if (!bgAudio.paused) {
+              isPlaying = true;
+              removeUnlockListeners();
+            }
           })
           .catch(() => {
-            // Browser blocked initial unmuted autoplay; will start on first interaction
+            // Browser blocked initial unmuted autoplay; will start on next user gesture
           });
       }
     };
 
-    const unlockEvents = ['pointerdown', 'touchstart', 'click', 'keydown', 'scroll', 'wheel'];
+    // Use capture: true so e.stopPropagation() on buttons/photos never blocks audio unlock
+    const unlockEvents = ['click', 'pointerup', 'touchend', 'keydown', 'pointerdown', 'touchstart'];
+    const listenerOpts = { capture: true, passive: true };
+
     const onFirstInteraction = () => {
+      if (isPlaying && !bgAudio.paused) {
+        removeUnlockListeners();
+        return;
+      }
       tryPlay();
     };
 
     function removeUnlockListeners() {
       unlockEvents.forEach((evt) => {
-        window.removeEventListener(evt, onFirstInteraction, { passive: true });
+        document.removeEventListener(evt, onFirstInteraction, listenerOpts);
+        window.removeEventListener(evt, onFirstInteraction, listenerOpts);
       });
     }
 
     unlockEvents.forEach((evt) => {
-      window.addEventListener(evt, onFirstInteraction, { passive: true });
+      document.addEventListener(evt, onFirstInteraction, listenerOpts);
+      window.addEventListener(evt, onFirstInteraction, listenerOpts);
+    });
+
+    bgAudio.addEventListener('playing', () => {
+      isPlaying = true;
+      removeUnlockListeners();
     });
 
     // Ensure seamless loop fallback
@@ -671,6 +777,7 @@
     setupBackgroundAudio();
 
     renderGrid();
+    setupFilmsScrollReveal();
     setupLayoutSwitch();
     setupViewerEvents();
 

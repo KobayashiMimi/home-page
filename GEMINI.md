@@ -50,9 +50,10 @@
 - **`photographs` (`#photographs`, `#photo/001`〜`#photo/111`)**:
   - `写真/` フォルダ内の10個のサブフォルダ（`名称未設定フォルダ` 〜 `名称未設定フォルダ 10`）の番号順に、重複を除いた全111枚を一続き（フォルダ名表示なし）で掲載。
 - **`films` (`#films`)**:
-  - 元STUDIOサイトの「music video」に掲載されていた2作品を掲載：
+  - 以下の3作品を掲載：
     1. YouTube埋め込み（`TYp5mWlrGpM`）＋ キャプション「`シュウタネギ/東京　自主制作作品`」
     2. YouTube埋め込み（`u57kkotD5Qg`）＋ キャプション「`中野来夢/傘　監督・撮影・編集`」
+    3. YouTube埋め込み（`WslsqcWlioA`）＋ キャプション「`山之内厳駿/escape　監督・撮影・編集`」
 - **`contact` (`#contact`)**:
   - `mail: KOBAYASHI.33018@gmail.com`
   - `Instagram：@kobayashi__mimi`（リンク先: `https://www.instagram.com/kobayashi__mimi?xtok=MWV0YTVteDhlcGxrMg%3D%3D&utm_source=qr`）
@@ -67,7 +68,7 @@
 - `js/main.js`: ルーティング・グリッド描画・ページめくりビューアのロジック
 - `assets/thumbs/`: グリッド一覧用の軽量サムネイル（`sips` で長辺720pxに生成）
 - `assets/photos/`: 1枚表示ビューア用のWeb最適化高画質画像（`sips` で長辺最大1920pxに生成）
-- `birth.m4a`: サイト閲覧中にバックグラウンドでループ再生する音源ファイル
+- `assets/birth.m4a`: サイト閲覧中にバックグラウンドでループ再生する音源ファイル
 - `写真/`: 元データの高解像度写真フォルダ（約534MB）。**原本として保持し、直接上書き・削除しないこと。** 写真の追加・差し替え時は `写真/` から `assets/thumbs/` と `assets/photos/` へ最適化画像を生成し、`js/photos-data.js` を更新すること。
 
 ---
