@@ -315,10 +315,51 @@
     setupPlateScrollReveal();
   }
 
+  // Load YouTube iframes only AFTER #view-films is visible (display: flex, width > 0)
+  // so YouTube initializes at full HD container resolution on PC and never renders black on mobile
+  function ensureFilmsIframesLoaded() {
+    if (!sections.films) return;
+    const isHttp =
+      window.location.protocol === 'http:' || window.location.protocol === 'https:';
+    const filmIframes = sections.films.querySelectorAll('iframe');
+
+    filmIframes.forEach((iframe) => {
+      if (iframe.getAttribute('src')) return;
+      const videoId = iframe.dataset.videoId;
+      const embedlySrc = iframe.dataset.embedlySrc;
+      if (isHttp && videoId) {
+        const originParam = encodeURIComponent(window.location.origin);
+        iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&rel=0&origin=${originParam}`;
+      } else if (embedlySrc) {
+        iframe.src = embedlySrc;
+      }
+    });
+  }
+
   // Switch Main View (top / self / photographs / contact)
   function switchView(viewName, scrollToTop = true) {
     if (!sections[viewName]) {
       viewName = 'top';
+    }
+    if (currentView === 'films' && viewName !== 'films' && sections.films) {
+      const filmIframes = sections.films.querySelectorAll('iframe');
+      filmIframes.forEach((f) => {
+        if (f.contentWindow) {
+          try {
+            f.contentWindow.postMessage(
+              JSON.stringify({ context: 'player.js', method: 'pause' }),
+              '*'
+            );
+            f.contentWindow.postMessage(
+              JSON.stringify({ event: 'command', func: 'pauseVideo', args: '' }),
+              '*'
+            );
+          } catch (_) {
+            // ignore
+          }
+        }
+      });
+      window.postMessage(JSON.stringify({ event: 'pause' }), '*');
     }
     currentView = viewName;
 
@@ -335,6 +376,9 @@
         }
         el.classList.add('is-active');
         requestAnimationFrame(() => {
+          if (viewName === 'films') {
+            ensureFilmsIframesLoaded();
+          }
           requestAnimationFrame(() => {
             el.classList.add('is-visible');
             if (viewName === 'photographs') {
@@ -689,47 +733,91 @@
     const bgAudio = document.getElementById('bg-audio');
     if (!bgAudio) return;
 
-    const audioSrc = 'assets/birth.m4a';
-    if (!bgAudio.getAttribute('src') || bgAudio.getAttribute('src') !== audioSrc) {
-      bgAudio.setAttribute('src', audioSrc);
-      bgAudio.load();
-    }
-
     bgAudio.loop = true;
     bgAudio.volume = 0.28;
 
     let isPlaying = false;
+    let playPending = false;
+    let isPausedByVideo = false;
+    const playingVideos = new Set();
+
+    const isActuallyPlaying = () =>
+      !bgAudio.paused && !bgAudio.ended && bgAudio.readyState >= 2 && bgAudio.currentTime > 0;
+
+    const pauseForVideo = (key) => {
+      if (key) playingVideos.add(key);
+      isPausedByVideo = true;
+      isPlaying = false;
+      bgAudio.pause();
+    };
+
+    const resumeFromVideo = (key) => {
+      if (key) {
+        playingVideos.delete(key);
+      } else {
+        playingVideos.clear();
+      }
+      if (playingVideos.size === 0) {
+        isPausedByVideo = false;
+        tryPlay();
+      }
+    };
 
     const tryPlay = () => {
-      if (document.hidden) return;
-      if (!bgAudio.paused && !bgAudio.ended) {
+      if (document.hidden || isPausedByVideo) return;
+      if (isActuallyPlaying()) {
         isPlaying = true;
         removeUnlockListeners();
         return;
       }
+      if (playPending) return;
 
       bgAudio.volume = 0.28;
+      bgAudio.muted = false;
+      playPending = true;
       const playPromise = bgAudio.play();
       if (playPromise && typeof playPromise.then === 'function') {
         playPromise
           .then(() => {
-            if (!bgAudio.paused) {
+            playPending = false;
+            if (isPausedByVideo) {
+              bgAudio.pause();
+              return;
+            }
+            if (isActuallyPlaying()) {
               isPlaying = true;
               removeUnlockListeners();
             }
           })
           .catch(() => {
-            // Browser blocked initial unmuted autoplay; will start on next user gesture
+            playPending = false;
           });
+      } else {
+        playPending = false;
       }
     };
 
-    // Use capture: true so e.stopPropagation() on buttons/photos never blocks audio unlock
-    const unlockEvents = ['click', 'pointerup', 'touchend', 'keydown', 'pointerdown', 'touchstart'];
+    const unlockEvents = [
+      'mousemove',
+      'pointermove',
+      'wheel',
+      'scroll',
+      'touchstart',
+      'touchmove',
+      'touchend',
+      'pointerdown',
+      'pointerup',
+      'mousedown',
+      'mouseup',
+      'click',
+      'keydown'
+    ];
     const listenerOpts = { capture: true, passive: true };
 
-    const onFirstInteraction = () => {
-      if (isPlaying && !bgAudio.paused) {
+    const onUserActivity = () => {
+      if (isPausedByVideo) return;
+      if (isActuallyPlaying()) {
+        isPlaying = true;
         removeUnlockListeners();
         return;
       }
@@ -738,19 +826,59 @@
 
     function removeUnlockListeners() {
       unlockEvents.forEach((evt) => {
-        document.removeEventListener(evt, onFirstInteraction, listenerOpts);
-        window.removeEventListener(evt, onFirstInteraction, listenerOpts);
+        document.removeEventListener(evt, onUserActivity, listenerOpts);
+        window.removeEventListener(evt, onUserActivity, listenerOpts);
       });
     }
 
-    unlockEvents.forEach((evt) => {
-      document.addEventListener(evt, onFirstInteraction, listenerOpts);
-      window.addEventListener(evt, onFirstInteraction, listenerOpts);
+    function attachUnlockListeners() {
+      unlockEvents.forEach((evt) => {
+        document.addEventListener(evt, onUserActivity, listenerOpts);
+        window.addEventListener(evt, onUserActivity, listenerOpts);
+      });
+    }
+
+    attachUnlockListeners();
+
+    // Retry automatically at every media readiness stage until playback actually advances
+    ['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((mediaEvt) => {
+      bgAudio.addEventListener(mediaEvt, () => {
+        if (!isPausedByVideo && !isActuallyPlaying()) {
+          tryPlay();
+        }
+      });
+    });
+
+    // Confirm real playback only once currentTime advances
+    bgAudio.addEventListener('timeupdate', () => {
+      if (!isPausedByVideo && isActuallyPlaying()) {
+        isPlaying = true;
+        removeUnlockListeners();
+      }
+    });
+
+    // Short startup retries on initial page open
+    [60, 180, 400, 800, 1500].forEach((delayMs) => {
+      setTimeout(() => {
+        if (!isPausedByVideo && !isActuallyPlaying()) {
+          tryPlay();
+        }
+      }, delayMs);
+    });
+
+    window.addEventListener('pageshow', () => {
+      if (!isPausedByVideo && !isActuallyPlaying()) tryPlay();
+    });
+
+    window.addEventListener('focus', () => {
+      if (!isPausedByVideo && !isActuallyPlaying()) tryPlay();
     });
 
     bgAudio.addEventListener('playing', () => {
-      isPlaying = true;
-      removeUnlockListeners();
+      if (!isPausedByVideo && isActuallyPlaying()) {
+        isPlaying = true;
+        removeUnlockListeners();
+      }
     });
 
     // Ensure seamless loop fallback
@@ -763,8 +891,136 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         bgAudio.pause();
-      } else {
+      } else if (!isPausedByVideo) {
         tryPlay();
+      }
+    });
+
+    // Pause BGM when any YouTube video in #view-films plays, and resume BGM when paused/ended
+    if (sections.films) {
+      const filmIframes = sections.films.querySelectorAll('iframe');
+
+      filmIframes.forEach((iframe, idx) => {
+        const key = `film-${idx}`;
+
+        const subscribePostMessageEvents = () => {
+          if (!iframe.contentWindow) return;
+          // 1) Direct YouTube IFrame API handshake
+          try {
+            iframe.contentWindow.postMessage(
+              JSON.stringify({ event: 'listening', id: key }),
+              '*'
+            );
+            iframe.contentWindow.postMessage(
+              JSON.stringify({
+                event: 'command',
+                func: 'addEventListener',
+                args: ['onStateChange']
+              }),
+              '*'
+            );
+          } catch (_) {
+            // ignore
+          }
+
+          // 2) Embedly / Player.js handshake
+          ['play', 'pause', 'ended'].forEach((evtName) => {
+            try {
+              iframe.contentWindow.postMessage(
+                JSON.stringify({
+                  context: 'player.js',
+                  method: 'addEventListener',
+                  value: evtName
+                }),
+                '*'
+              );
+            } catch (_) {
+              // ignore cross-origin postMessage errors
+            }
+          });
+        };
+
+        iframe.addEventListener('load', () => {
+          subscribePostMessageEvents();
+          setTimeout(subscribePostMessageEvents, 250);
+          setTimeout(subscribePostMessageEvents, 800);
+
+          if (window.playerjs && typeof window.playerjs.Player === 'function') {
+            try {
+              const player = new window.playerjs.Player(iframe);
+              player.on('ready', () => {
+                player.on('play', () => {
+                  pauseForVideo(key);
+                });
+                player.on('pause', () => {
+                  resumeFromVideo(key);
+                });
+                player.on('ended', () => {
+                  resumeFromVideo(key);
+                });
+              });
+            } catch (_) {
+              // Fallback to postMessage listener below
+            }
+          }
+        });
+      });
+    }
+
+    window.addEventListener('message', (e) => {
+      if (!e.data) return;
+      let msg = e.data;
+      if (typeof msg === 'string') {
+        try {
+          msg = JSON.parse(msg);
+        } catch (_) {
+          return;
+        }
+      }
+      if (!msg || typeof msg !== 'object') return;
+
+      // Locate matching film iframe key if possible
+      let sourceKey = 'film-msg';
+      if (sections.films) {
+        const filmIframes = Array.from(sections.films.querySelectorAll('iframe'));
+        const matchedIdx = filmIframes.findIndex((f) => f.contentWindow === e.source);
+        if (matchedIdx !== -1) {
+          sourceKey = `film-${matchedIdx}`;
+        }
+      }
+
+      if (msg.context === 'player.js' && msg.event === 'ready' && e.source) {
+        ['play', 'pause', 'ended'].forEach((evtName) => {
+          try {
+            e.source.postMessage(
+              JSON.stringify({
+                context: 'player.js',
+                method: 'addEventListener',
+                value: evtName
+              }),
+              '*'
+            );
+          } catch (_) {
+            // ignore
+          }
+        });
+      }
+
+      if (
+        msg.event === 'play' ||
+        (msg.event === 'infoDelivery' && msg.info && msg.info.playerState === 1) ||
+        (msg.event === 'onStateChange' && msg.info === 1)
+      ) {
+        pauseForVideo(sourceKey);
+      } else if (
+        msg.event === 'pause' ||
+        msg.event === 'ended' ||
+        (msg.event === 'infoDelivery' &&
+          msg.info &&
+          (msg.info.playerState === 2 || msg.info.playerState === 0)) ||
+        (msg.event === 'onStateChange' && (msg.info === 2 || msg.info === 0))
+      ) {
+        resumeFromVideo(e.source === window ? null : sourceKey);
       }
     });
 

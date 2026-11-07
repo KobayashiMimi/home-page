@@ -24,7 +24,7 @@
       <!-- 1. TOP -->
       <section id="view-top" class="view-section is-active is-visible" aria-label="トップ">
         <div class="top-stage">
-          <a href="#photographs" class="top-hero-link" aria-label="写真一覧を見る">
+          <div class="top-hero-link">
             <img
               id="top-hero-img"
               src="assets/hero-top.jpg"
@@ -38,7 +38,7 @@
               class="top-hero-image"
               aria-hidden="true"
             >
-          </a>
+          </div>
         </div>
       </section>
 
@@ -101,13 +101,14 @@
           <article class="film-item">
             <div class="film-video-wrap">
               <iframe
-                src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FTYp5mWlrGpM%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTYp5mWlrGpM&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FTYp5mWlrGpM%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube"
+                data-video-id="TYp5mWlrGpM"
+                data-embedly-src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FTYp5mWlrGpM%3Ffeature%3Doembed%26enablejsapi%3D1%26playsinline%3D1&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DTYp5mWlrGpM&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FTYp5mWlrGpM%2Fmaxresdefault.jpg&type=text%2Fhtml&schema=youtube"
                 title="シュウタネギ / 東京 Music Video"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin"
                 allowfullscreen
-                loading="lazy"
+                playsinline
               ></iframe>
             </div>
             <p class="film-caption">シュウタネギ/東京　自主制作作品</p>
@@ -122,13 +123,14 @@
           <article class="film-item">
             <div class="film-video-wrap">
               <iframe
-                src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fu57kkotD5Qg%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Du57kkotD5Qg&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fu57kkotD5Qg%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube"
+                data-video-id="u57kkotD5Qg"
+                data-embedly-src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fu57kkotD5Qg%3Ffeature%3Doembed%26enablejsapi%3D1%26playsinline%3D1&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Du57kkotD5Qg&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fu57kkotD5Qg%2Fmaxresdefault.jpg&type=text%2Fhtml&schema=youtube"
                 title="中野来夢 / 傘 Music Video"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin"
                 allowfullscreen
-                loading="lazy"
+                playsinline
               ></iframe>
             </div>
             <p class="film-caption">中野来夢/傘　監督・撮影・編集</p>
@@ -143,13 +145,14 @@
           <article class="film-item">
             <div class="film-video-wrap">
               <iframe
-                src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FWslsqcWlioA%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DWslsqcWlioA&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FWslsqcWlioA%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube"
+                data-video-id="WslsqcWlioA"
+                data-embedly-src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FWslsqcWlioA%3Ffeature%3Doembed%26enablejsapi%3D1%26playsinline%3D1&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DWslsqcWlioA&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FWslsqcWlioA%2Fmaxresdefault.jpg&type=text%2Fhtml&schema=youtube"
                 title="山之内厳駿 / escape Music Video"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin"
                 allowfullscreen
-                loading="lazy"
+                playsinline
               ></iframe>
             </div>
             <p class="film-caption">山之内厳駿/escape　監督・撮影・編集</p>
@@ -228,12 +231,20 @@
   </div>
 
   <!-- Background Loop Audio -->
-  <audio id="bg-audio" src="assets/birth.m4a" loop preload="auto" autoplay playsinline>
-    <source src="assets/birth.m4a" type="audio/mp4">
-    <source src="assets/birth.m4a" type="audio/x-m4a">
-  </audio>
+  <audio id="bg-audio" src="assets/birth.m4a" loop preload="auto" autoplay playsinline></audio>
+  <script>
+    (function () {
+      var a = document.getElementById('bg-audio');
+      if (a) {
+        a.volume = 0.28;
+        var p = a.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+    })();
+  </script>
 
   <script src="js/photos-data.js"></script>
   <script src="js/main.js"></script>
+  <script src="https://cdn.embed.ly/player-0.1.0.min.js" async></script>
 </body>
 </html>

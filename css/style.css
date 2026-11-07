@@ -621,7 +621,7 @@ button:disabled {
 
 .films-stage {
   width: 100%;
-  max-width: 640px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -681,11 +681,11 @@ button:disabled {
 
 .film-stills {
   width: 100%;
-  max-width: 580px;
+  max-width: 680px;
   margin-top: 56px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  column-gap: 24px;
+  column-gap: 28px;
   row-gap: 72px;
   align-items: start;
 }
@@ -702,64 +702,64 @@ button:disabled {
   transition: opacity 1.4s ease, transform 1.4s ease;
 }
 
-/* Editorial asymmetric 2-per-row placement (4–5 cols wide with 2–3 cols of whitespace between) */
+/* Editorial asymmetric 2-per-row placement (5–6 cols wide with 1–2 cols of whitespace between) */
 .film-stills .film-still-img:nth-child(1) {
-  grid-column: 1 / span 5;
+  grid-column: 1 / span 6;
 }
 
 .film-stills .film-still-img:nth-child(2) {
-  grid-column: 8 / span 4;
+  grid-column: 8 / span 5;
   margin-top: 64px;
 }
 
 .film-stills .film-still-img:nth-child(3) {
-  grid-column: 2 / span 4;
+  grid-column: 1 / span 5;
   margin-top: 52px;
 }
 
 .film-stills .film-still-img:nth-child(4) {
-  grid-column: 8 / span 5;
+  grid-column: 7 / span 6;
 }
 
 /* Subtle rhythm variation for the 2nd film block (傘) */
 .film-item:nth-child(2) .film-stills .film-still-img:nth-child(1) {
-  grid-column: 2 / span 4;
+  grid-column: 1 / span 5;
   margin-top: 56px;
 }
 
 .film-item:nth-child(2) .film-stills .film-still-img:nth-child(2) {
-  grid-column: 8 / span 5;
+  grid-column: 7 / span 6;
   margin-top: 0;
 }
 
 .film-item:nth-child(2) .film-stills .film-still-img:nth-child(3) {
-  grid-column: 1 / span 5;
+  grid-column: 1 / span 6;
   margin-top: 0;
 }
 
 .film-item:nth-child(2) .film-stills .film-still-img:nth-child(4) {
-  grid-column: 8 / span 4;
+  grid-column: 8 / span 5;
   margin-top: 68px;
 }
 
 /* Subtle rhythm variation for the 3rd film block (escape) */
 .film-item:nth-child(3) .film-stills .film-still-img:nth-child(1) {
-  grid-column: 1 / span 5;
+  grid-column: 1 / span 6;
   margin-top: 0;
 }
 
 .film-item:nth-child(3) .film-stills .film-still-img:nth-child(2) {
-  grid-column: 8 / span 4;
+  grid-column: 8 / span 5;
   margin-top: 72px;
 }
 
 .film-item:nth-child(3) .film-stills .film-still-img:nth-child(3) {
-  grid-column: 2 / span 4;
+  grid-column: 1 / span 5;
   margin-top: 54px;
 }
 
 .film-item:nth-child(3) .film-stills .film-still-img:nth-child(4) {
-  grid-column: 8 / span 5;
+  grid-column: 7 / span 6;
   margin-top: 0;
 }
 
