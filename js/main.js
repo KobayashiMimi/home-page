@@ -141,7 +141,7 @@
   }
 
   // Explicitly featured 1-based photo numbers requested to be displayed large
-  const FEATURE_NUMBERS = new Set([1, 7, 14, 31, 40, 47, 56, 59, 65, 78, 81, 92, 96, 111]);
+  const FEATURE_NUMBERS = new Set([1, 7, 14, 30, 39, 46, 55, 58, 64, 77, 80, 91, 95, 110]);
 
   // Balanced 2-photo diptych templates (Left + Right always complete a 12-col row; min size = 5 cols = photo 025 size)
   const DIPTYCH_PAIRS = [
@@ -194,7 +194,7 @@
         const p = photos[idx];
         if (seg.photoNum === 1) {
           classes[idx] = 'feature-opening-xl';
-        } else if (seg.photoNum === 111) {
+        } else if (seg.photoNum === totalPhotos) {
           classes[idx] = 'feature-portrait-center';
         } else if (p && p.orientation === 'landscape') {
           const landscapeFeatureStyles = [
