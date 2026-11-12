@@ -107,22 +107,25 @@ button:disabled {
 }
 
 .brand-vertical {
-  display: inline-block;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-family: var(--font-antique);
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-primary);
-  letter-spacing: 0.85em;
-  line-height: 1.4;
-  padding-top: 0.4em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
   user-select: none;
   transition: opacity var(--transition-mid);
 }
 
 .brand-vertical:hover {
   opacity: 0.65;
+}
+
+.brand-logo {
+  display: block;
+  height: 152px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -898,14 +901,17 @@ button:disabled {
 }
 
 .viewer-brand {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-family: var(--font-antique);
-  font-size: 12px;
-  color: var(--text-primary);
-  letter-spacing: 0.85em;
-  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
   margin: 0 auto;
+  user-select: none;
+  transition: opacity var(--transition-mid);
+}
+
+.viewer-brand:hover {
+  opacity: 0.65;
 }
 
 .viewer-stage {
@@ -1078,9 +1084,8 @@ button:disabled {
     padding: 4px 0 16px;
   }
 
-  .brand-vertical {
-    font-size: 11px;
-    letter-spacing: 0.75em;
+  .brand-logo {
+    height: 128px;
   }
 
   .top-hero-link {
