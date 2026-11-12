@@ -669,12 +669,13 @@ button:disabled {
   width: 100%;
   max-width: 620px;
   margin-top: 14px;
-  font-family: var(--font-antique);
+  font-family: var(--font-mincho);
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 2.2;
   letter-spacing: 0.05em;
-  color: var(--text-primary);
+  color: rgba(238, 238, 238, 0.88);
+  -webkit-text-stroke: 0.15px #000000;
   text-align: right;
   opacity: 0;
   transition: opacity 1.4s ease;
@@ -1097,7 +1098,9 @@ button:disabled {
     min-height: 240px;
   }
 
-  .self-bio {
+  .self-bio,
+  .contact-item,
+  .contact-item a {
     font-size: 8px;
   }
 
@@ -1231,7 +1234,7 @@ button:disabled {
   }
 
   .film-caption {
-    font-size: 10px;
+    font-size: 8px;
     margin-top: 10px;
   }
 
