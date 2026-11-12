@@ -242,11 +242,13 @@ button:disabled {
 
 .self-bio {
   flex: 0 1 300px;
-  font-family: var(--font-antique);
+  font-family: var(--font-mincho);
   font-size: 11px;
+  font-weight: 300;
   line-height: 2.1;
   letter-spacing: 0.08em;
-  color: var(--text-secondary);
+  color: rgba(238, 238, 238, 0.88);
+  -webkit-text-stroke: 0.15px #000000;
   text-align: center;
 }
 
@@ -794,13 +796,15 @@ button:disabled {
   text-align: center;
 }
 
-.contact-item {
+.contact-item,
+.contact-item a {
   font-family: var(--font-mincho);
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.8;
   letter-spacing: 0.12em;
-  color: var(--text-secondary);
+  color: rgba(238, 238, 238, 0.88);
+  -webkit-text-stroke: 0.15px #000000;
   word-break: break-all;
 }
 
